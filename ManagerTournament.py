@@ -13,7 +13,7 @@ class ManagerTournament:
 
 #Metodo para crear a los jugadores
     def create_players(self):
-        player1 = Player(luck=3, technique=20, positioning=3, sets_won=0, games_won=0,
+        player1 = Player(luck=3, technique=0, positioning=3, sets_won=0, games_won=0,
                          Tie_Break_won=0, missed_serves=0, serves_served=0, points=0,
                          type_of_tournament_won="", tournaments_won=0, player_id="001", service_failure=0)
 
@@ -49,60 +49,96 @@ class ManagerTournament:
             self.raffle(player1, player2)
         return player_service, player_subtractor
 
+#EstudiaR!!!! 
+    """    def raffle(self, player1: Player, player2: Player) -> Player:
+        player_service = None
+        player_subtractor = None
 
+        if player1.get_luck() > player2.get_luck():
+            player_service = player1
+            player_subtractor = player2
+        elif player2.get_luck() > player1.get_luck():
+            player_service = player2
+            player_subtractor = player1
+        else:
+            # Si tienen la misma suerte, se realiza el sorteo de nuevo
+            self.raffle(player1, player2)
+
+        player_service.set_service(True)
+        player_subtractor.set_substractor(True)
+        
+        player_service.set_substractor(False)
+        player_subtractor.set_service(False)
+        
+        return player_service, player_subtractor
+    """
   # Método para simular la anotación de un punto
-    def start_game(self, player_service: Player, player_subtract: Player) -> Player:
-        print("juego")
-        #------------ pendiente player_service, player_subtract = self.raffle(player1, player2)
-        if self.is_successful_service(player_service):
-            score = self.launch()
-            print("score",score)
-            if score == 1:
+    # Get winner point 
+    def score_points(self, player_service: Player, player_subtract: Player) -> Player:
+        print("Anotar punto")
+        score = self.launch()
+        print("score",score)
+        if score == 1:
+            player_service.set_points(player_service.get_points() + 1)
+            #player_service.add_point()
+        else:
+            if (self.ball_return() == 0):
+                print("Regular1111111111")
+                score1 = self.launch()
+                print("score", score1)
+                if score1 == 0:
+                    print("Hola")
+                    if (self.ball_return()==0):
+                        print("Regular")
+                        self.score_points(player_service,player_subtract)
+                    elif(self.ball_return()==1):
+                        print("Buena")
+                        player_subtract.set_points(player_subtract.get_points() + 1)
+                    else:
+                        print("Error")
+                        player_service.set_points(player_service.get_points() + 1) 
+                else:
+                    player_subtract.set_points(player_subtract.get_points() + 1)
+            elif(self.ball_return() == 1):
+                print("Buena111111111111")
                 player_service.set_points(player_service.get_points() + 1)
             else:
-                if (self.ball_return()==0):
-                    print("Regular1111111111")
-                    score1 = self.launch()
-                    print("score", score1)
-                    if score1 == 0:
-                        print("Hola")
-                        if (self.ball_return()==0):
-                            print("Regular")
-                            self.start_game(player1,player2)
-                        elif(self.ball_return()==1):
-                            print("Buena")
-                            player_subtract.set_points(player_subtract.get_points() + 1)
-                        else:
-                            print("Error")
-                            player_service.set_points(player_service.get_points() + 1) 
-                    else:
-                        player_subtract.set_points(player_subtract.get_points() + 1)
-                elif(self.ball_return()==1):
-                    print("Buena111111111111")
-                    player_service.set_points(player_service.get_points() + 1)
-                else:
-                    print("Error1111111111")
-                    player_subtract.set_points(player_subtract.get_points() + 1)        
-        else:
-            player_service.set_service_failure(player_service.get_service_failure() + 1)
+                print("Error1111111111")
+                player_subtract.set_points(player_subtract.get_points() + 1)        
             #Retorna el jugador que anotó punto
         return player1 if player1.get_points() > player2.get_points() else player2
  
  #Metodo para Simular un juego
-    """   def start_game(self, player1: 'Player', player2: 'Player') -> 'Player':
+    def start_game(self, player1: 'Player', player2: 'Player') -> 'Player':
         player_service, player_subtractor = self.raffle(player1, player2)
-        if(self.is_successful_service(player_service) == True):
-            self.launch()
-        else:
-            player_service.set_service_failure(player_service.get_service_failure()+1)
-        return player1
-        """
+        player_service.set_technique(random.randint(10, 30))
+        player_subtractor.set_technique(random.randint(10, 30))
+        while (abs(player_service.get_points() - player_subtractor.get_points()) < 2 or 
+            player_service.get_points() != player_subtractor.get_points()) and \
+            not ((player_service.get_points() == 4 and player_subtractor.get_points() == 2) or
+                    (player_service.get_points() == 4 and player_subtractor.get_points() == 4)):
+            if(self.is_successful_service(player_service) == True):
+                self.score_points(player_service,player_subtractor)
+            else:
+                player_service.set_service_failure(player_service.get_service_failure()+1)
+                print("Falló")
+                if(self.double_failure_service(player_service,player_subtractor) == True):
+                    print("Falló dos veces")
+            if player_service.get_points() == 4 or player_subtractor.get_points() == 4:
+                print("Primer jugador =4")
+                if abs(player_service.get_points() - player_subtractor.get_points()) >= 2:
+                    # Juego terminado
+                    print("¡Jugador ganador!")
+            elif player_service.get_points() == 4 and player_subtractor.get_points() == 4:
+                # Empate
+                print("¡Empate!")
+            player_service, player_subtractor = player_subtractor, player_service
+        return player1 if player1.get_points() > player2.get_points() else player2
+        
     
 #Metodo para determinar si un servicio es exitoso o no
     def is_successful_service(self, player_service: Player) -> bool:
-        #la tecnica se genera de forma aleatoria!!!
-        player_service.set_technique(20)
-        if player_service.get_technique() >= 15:
+        if player_service.get_technique() >= 10:
             player_service.set_serves_served(player_service.get_serves_served()+1)
             return True
         else:
@@ -115,6 +151,9 @@ class ManagerTournament:
         if(player_service.get_service_failure() == 2):
             player_subtractor.set_points(player_subtractor.get_points()+1)
             player_service.set_service_failure(0)
+            return True
+        else:
+            return False
 
 #Metodo para especificar el lugar de la cancha en el que cae la pelota
     def launch(self) -> int:
