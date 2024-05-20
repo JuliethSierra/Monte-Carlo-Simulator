@@ -1,7 +1,7 @@
 class Player:
     def __init__(self, player_id: str, luck: float, technique: int, positioning: float, sets_won: int, games_won: int,
                  Tie_Break_won: int, missed_serves: int, serves_served: int, points: int,
-                 type_of_tournament_won: str, tournaments_won: int,  service_failure: int):
+                 type_of_tournament_won: str, tournaments_won: int,  service_failure: int, total_points: int, total_games_won: int, total_sets_won:int, total_tournaments_won: int):
         self._id = player_id
         self._luck = luck
         self._technique = technique
@@ -17,6 +17,11 @@ class Player:
         self._service = False
         self._subtractor = False
         self._service_failure = service_failure
+        self._total_points = total_points
+        self._total_games_won = total_games_won
+        self._total_sets_won = total_sets_won
+        self._total_tournaments_won = total_tournaments_won
+
 
     # Métodos Getter
     def get_player_id(self) -> str:
@@ -64,6 +69,18 @@ class Player:
     def get_service_failure(self) -> int:
         return self._service_failure
     
+    def get_total_points(self):
+        return self._total_points
+
+    def get_total_games_won(self):
+        return self._total_games_won
+
+    def get_total_sets_won(self):
+        return self._total_sets_won
+
+    def get_total_tournaments_won(self):
+        return self._total_tournaments_won
+    
     # Métodos Setter
     def set_player_id(self, player_id: str) -> None:
         self._id = player_id
@@ -110,6 +127,18 @@ class Player:
     def set_service_failure(self, service_failure: int) -> int:
         self._service = service_failure
 
+    def set_total_points(self, value):
+        self._total_points = value
+
+    def set_total_games_won(self, value):
+        self._total_games_won = value
+
+    def set_total_sets_won(self, value):
+        self._total_sets_won = value
+
+    def set_total_tournaments_won(self, value):
+        self._total_tournaments_won = value
+
     def print_player_data(self) -> None:
         print("Player Data:")
         print("-------------------------------------------------")
@@ -120,7 +149,7 @@ class Player:
         print("| {:<20} | {:<10} |".format("Technique", self._technique))
         print("| {:<20} | {:<10.2f} |".format("Positioning", self._positioning))
         print("| {:<20} | {:<10} |".format("Sets won", self._sets_won))
-        print("| {:<20} | {:<10} |".format("Draws won", self._games_won))
+        print("| {:<20} | {:<10} |".format("Games won", self._games_won))
         print("| {:<20} | {:<10} |".format("Service faults", self._Tie_Break_won))
         print("| {:<20} | {:<10} |".format("Missed serves", self._missed_serves))
         print("| {:<20} | {:<10} |".format("Serves served", self._serves_served))
@@ -130,6 +159,10 @@ class Player:
         print("| {:<20} | {:<10} |".format("Is service", self._service))
         print("| {:<20} | {:<10} |".format("Service Failure", self._service_failure))
         print("| {:<20} | {:<10} |".format("Is substractor", self._subtractor))
+        print("| {:<20} | {:<10} |".format("Total points", self._total_points))
+        print("| {:<20} | {:<10} |".format("Total games won", self._total_games_won))
+        print("| {:<20} | {:<10} |".format("Total sets won", self._total_sets_won))
+        print("| {:<20} | {:<10} |".format("Total tournaments won", self._total_tournaments_won))
         print("-------------------------------------------------")
 
 
