@@ -139,7 +139,7 @@ class Player:
     def set_total_tournaments_won(self, value):
         self._total_tournaments_won = value
 
-    def print_player_data(self) -> None:
+    def print_player_data(self):
         print("Player Data:")
         print("-------------------------------------------------")
         print("| {:<20} | {:<10} |".format("Attribute", "Value"))

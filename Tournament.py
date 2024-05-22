@@ -50,4 +50,3 @@ class Tournament:
 
     def calculate_sets_won(self) -> int:
         return sum(s.get_set_winner() == self._tournament_winner for s in self._sets)
-

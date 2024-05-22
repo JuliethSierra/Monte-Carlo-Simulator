@@ -4,7 +4,7 @@ from Player import Player
 class Set:
     def __init__(self, set_id: str, games: list, set_winner: 'Player'):
         self._set_id = set_id
-        self._games = games
+        self._games = []
         self._set_winner = set_winner
 
     # Métodos Getter y Setter
