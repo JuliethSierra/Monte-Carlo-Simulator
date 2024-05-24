@@ -335,7 +335,6 @@ class ManagerTournament:
     #Metodo para Jugar varios torneos
     def playRounds(self, player1: 'Player', player2: 'Player',tournament: 'Tournament'):
         self.final_tournament(player1, player2)
-        print("torneo0000000000000000000000000000000000000000000")
         winner = self.define_tournament_winner(player1, player2, tournament)
         return winner
 
@@ -374,7 +373,6 @@ class ManagerTournament:
         resultados = []
 
         for _ in range(20):
-            print("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             resultados.append(self.simulacion_round(player1, player2, tournament))
         
         return resultados
@@ -437,8 +435,6 @@ manager = ManagerTournament()
 tournament = manager.create_tournament()
 player1, player2 = manager.create_players()
 print("------------------------------------------------------------------------")
-#print("Fin Torneo",manager.define_tournament_winner(player1, player2, tournament))
-#print("Fin Torneo",manager.playRounds(player1, player2, tournament))
 
 print("Fin Torneo")
 data = manager.simulacion(player1, player2, tournament)
@@ -448,25 +444,5 @@ for i in range(len(data)):
 
 print("--------------------------------------------------------------------------")
 
-
-"""# Crear un set y un juego de muestra
-game1 = Game(game_id="Game", players=[player1, player2], game_winner= manager.establish_winner_game(player1,player2))
-set1 = Set(set_id="Set", games=[game1], set_winner=manager.establish_winner_Set(player1, player2))
-
-#tournament = Tournament(tournament_id=1, tournament_type="", tournament_winner=manager.establish_winner_tournament(player1,player2,tournament), sets=[set1])
-#manager.assign_tournament_type(tournament)
-
-# Imprimir datos del juego
-print("\nGame 1 Data:")
-manager.print_game_data(game1)
-
-# Imprimir datos del set
-print("\nSet 1 Data:")
-manager.print_set_data(set1)
-
-# Imprimir datos del Torneo
-print("\nTournament 1 Data:")
-manager.print_tournament_data(tournament)
-"""
 
 
