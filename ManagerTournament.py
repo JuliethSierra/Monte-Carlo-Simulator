@@ -65,26 +65,26 @@ class ManagerTournament:
         return player_service, player_subtractor
     
   # Método para simular la anotación de un punto
-    def get_winner_points(self, player_service: Player, player_subtract: Player) -> Player:
+    def get_winner_points(self, player1: Player, player2: Player) -> Player:
         score = self.launch()
         if score == 1:
-            self.add_player_points(player_service)
+            self.add_player_points(player1)
         else:
             if (self.ball_return() == 0):
                 score1 = self.launch()
                 if score1 == 0:
                     if (self.ball_return()==0):
-                        self.get_winner_points(player_service,player_subtract)
+                        self.get_winner_points(player1,player2)
                     elif(self.ball_return()==1):
-                        self.add_player_points(player_subtract)
+                        self.add_player_points(player2)
                     else:
-                        self.add_player_points(player_service)
+                        self.add_player_points(player1)
                 else:
-                    self.add_player_points(player_subtract)
+                    self.add_player_points(player2)
             elif(self.ball_return() == 1):
-                self.add_player_points(player_service)
+                self.add_player_points(player1)
             else:
-                self.add_player_points(player_subtract)
+                self.add_player_points(player2)
         return player1 if player1.get_points() > player2.get_points() else player2
  
     #Metodo para Simular un juego
@@ -186,7 +186,7 @@ class ManagerTournament:
             if advantage_player is None:
                 player_service, player_subtractor = player_subtractor, player_service
             else:
-                player_service, player_subtractor = advantage_player, player1 if advantage_player == player2 else player2
+                player_service, player_subtractor = advantage_player, player_service if advantage_player == player_subtractor else player_subtractor
             
             if self.is_successful_service(player_service):
                 self.get_winner_points(player_service, player_subtractor)
@@ -369,10 +369,10 @@ class ManagerTournament:
             return winner, loser
 
     #Metodo para obtener los resultados de cada torneo
-    def simulacion(self, player1: 'Player', player2: 'Player',tournament: 'Tournament'):
+    def simulacion(self, player1: 'Player', player2: 'Player',tournament: 'Tournament', num):
         resultados = []
 
-        for _ in range(20):
+        for _ in range(num):
             resultados.append(self.simulacion_round(player1, player2, tournament))
         
         return resultados
@@ -428,21 +428,6 @@ class ManagerTournament:
 
     def print_tournament_data(self, tournament: 'Tournament') -> None:
         tournament.print_tournament_data()
-
-
-# Ejemplo de uso
-manager = ManagerTournament()
-tournament = manager.create_tournament()
-player1, player2 = manager.create_players()
-print("------------------------------------------------------------------------")
-
-print("Fin Torneo")
-data = manager.simulacion(player1, player2, tournament)
-for i in range(len(data)):
-    print("Resultado final torneoooooooooooooooooooooooooooooooooo")
-    data[i].print_results()
-
-print("--------------------------------------------------------------------------")
 
 
 
