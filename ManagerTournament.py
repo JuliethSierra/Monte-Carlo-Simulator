@@ -6,9 +6,11 @@ from Set import Set
 from Tournament import Tournament
 
 class ManagerTournament:
-    def __init__(self):
-        pass
 
+    def __init__(self):
+        self.finalResults = []
+        pass
+    
     #Metodo para crear un torneo
     def create_tournament(self):
         tournament = Tournament(tournament_id=0, tournament_type= "", tournament_winner= None, sets= None)
@@ -360,27 +362,26 @@ class ManagerTournament:
     #Metodo para Obtener los puntajes de los jugadores en cada unos de los juegos
     def get_player_winner_and_loser_game(self, player1: 'Player', player2: 'Player'):
         if player1.get_points() > player2.get_points():
-            winner = player1.get_points()
-            loser = player2.get_points()
+            winner = player1
+            loser = player2
             return winner, loser
         else:
-            winner = player2.get_points()
-            loser = player1.get_points()
+            winner = player2
+            loser = player1
             return winner, loser
 
-    #Metodo para obtener los resultados de cada torneo
-    def simulacion(self, player1: 'Player', player2: 'Player',tournament: 'Tournament', num):
+    # Método para simular múltiples juegos
+    def simulacion(self, player1: 'Player', player2: 'Player', tournament: 'Tournament', num):
         resultados = []
 
         for _ in range(num):
-            resultados.append(self.simulacion_round(player1, player2, tournament))
-        
+            resultado = self.simulacion_round(player1, player2, tournament)
+            resultados.append(resultado)
         return resultados
 
 
-    # Función para simular múltiples juegos
-    def simulacion_round(self, player1: 'Player', player2: 'Player',tournament: 'Tournament') -> ResultGame:
-        #self.final_tournament(player1, player2)
+    # Función para simular un juego
+    def simulacion_round(self, player1: 'Player', player2: 'Player', tournament: 'Tournament') -> ResultGame:
 
         tournament_winner_with_score: Player = self.playRounds(player1, player2, tournament)
         player_with_most_games_won: Player = self.get_player_more_victories_game(player1, player2)
@@ -389,12 +390,12 @@ class ManagerTournament:
         player_winner_game, player_loser_game = self.get_player_winner_and_loser_game(player1, player2)
 
         resultGame = ResultGame(
-            tournament_winner_with_score,
-            player_with_most_games_won,
-            player_with_most_sets_won,
-            player_with_most_tournaments_won,
-            player_winner_game,
-            player_loser_game
+            Player(tournament_winner_with_score.get_player_id(),tournament_winner_with_score.get_luck(), tournament_winner_with_score.get_technique(), tournament_winner_with_score.get_positioning(), tournament_winner_with_score.get_sets_won(), tournament_winner_with_score.get_games_won(), tournament_winner_with_score.get_TieBreak(), tournament_winner_with_score.get_missed_serves(), tournament_winner_with_score.get_serves_served(), tournament_winner_with_score.get_points(), tournament_winner_with_score.get_type_of_tournament_won(), tournament_winner_with_score.get_tournaments_won(), tournament_winner_with_score.get_service_failure(), tournament_winner_with_score.get_total_points(), tournament_winner_with_score.get_total_games_won(), tournament_winner_with_score.get_total_sets_won(), tournament_winner_with_score.get_total_tournaments_won()),
+            Player(player_with_most_games_won.get_player_id(),player_with_most_games_won.get_luck(), player_with_most_games_won.get_technique(), player_with_most_games_won.get_positioning(), player_with_most_games_won.get_sets_won(), player_with_most_games_won.get_games_won(), player_with_most_games_won.get_TieBreak(), player_with_most_games_won.get_missed_serves(), player_with_most_games_won.get_serves_served(), player_with_most_games_won.get_points(), player_with_most_games_won.get_type_of_tournament_won(), player_with_most_games_won.get_tournaments_won(), player_with_most_games_won.get_service_failure(), player_with_most_games_won.get_total_points(), player_with_most_games_won.get_total_games_won(), player_with_most_games_won.get_total_sets_won(), player_with_most_games_won.get_total_tournaments_won()),
+            Player(player_with_most_sets_won.get_player_id(),player_with_most_sets_won.get_luck(), player_with_most_sets_won.get_technique(), player_with_most_sets_won.get_positioning(), player_with_most_sets_won.get_sets_won(), player_with_most_sets_won.get_games_won(), player_with_most_sets_won.get_TieBreak(), player_with_most_sets_won.get_missed_serves(), player_with_most_sets_won.get_serves_served(), player_with_most_sets_won.get_points(), player_with_most_sets_won.get_type_of_tournament_won(), player_with_most_sets_won.get_tournaments_won(), player_with_most_sets_won.get_service_failure(), player_with_most_sets_won.get_total_points(), player_with_most_sets_won.get_total_games_won(), player_with_most_sets_won.get_total_sets_won(), player_with_most_sets_won.get_total_tournaments_won()),
+            Player(player_with_most_tournaments_won.get_player_id(),player_with_most_tournaments_won.get_luck(), player_with_most_tournaments_won.get_technique(), player_with_most_tournaments_won.get_positioning(), player_with_most_tournaments_won.get_sets_won(), player_with_most_tournaments_won.get_games_won(), player_with_most_tournaments_won.get_TieBreak(), player_with_most_tournaments_won.get_missed_serves(), player_with_most_tournaments_won.get_serves_served(), player_with_most_tournaments_won.get_points(), player_with_most_tournaments_won.get_type_of_tournament_won(), player_with_most_tournaments_won.get_tournaments_won(), player_with_most_tournaments_won.get_service_failure(), player_with_most_tournaments_won.get_total_points(), player_with_most_tournaments_won.get_total_games_won(), player_with_most_tournaments_won.get_total_sets_won(), player_with_most_tournaments_won.get_total_tournaments_won()),
+            Player(player_winner_game.get_player_id(),player_winner_game.get_luck(), player_winner_game.get_technique(), player_winner_game.get_positioning(), player_winner_game.get_sets_won(), player_winner_game.get_games_won(), player_winner_game.get_TieBreak(), player_winner_game.get_missed_serves(), player_winner_game.get_serves_served(), player_winner_game.get_points(), player_winner_game.get_type_of_tournament_won(), player_winner_game.get_tournaments_won(), player_winner_game.get_service_failure(), player_winner_game.get_total_points(), player_winner_game.get_total_games_won(), player_winner_game.get_total_sets_won(), player_winner_game.get_total_tournaments_won()),
+            Player(player_loser_game.get_player_id(),player_loser_game.get_luck(), player_loser_game.get_technique(), player_loser_game.get_positioning(), player_loser_game.get_sets_won(), player_loser_game.get_games_won(), player_loser_game.get_TieBreak(), player_loser_game.get_missed_serves(), player_loser_game.get_serves_served(), player_loser_game.get_points(), player_loser_game.get_type_of_tournament_won(), player_loser_game.get_tournaments_won(), player_loser_game.get_service_failure(), player_loser_game.get_total_points(), player_loser_game.get_total_games_won(), player_loser_game.get_total_sets_won(), player_loser_game.get_total_tournaments_won())
         )
 
         # Imprimir datos del jugador 1
@@ -403,18 +404,19 @@ class ManagerTournament:
         # Imprimir datos del jugador 1
         print("Player 2 Data:")
         self.print_player_data(player2)
-    
+        
         print("\n----------------------------------------------------------------\n")
         print("------------------------- GAME RESULT -------------------------")
         print("\n----------------------------------------------------------------\n")
 
         print(f'player_with_most_games_won: {player_with_most_games_won}')
         print(f'player_with_most_tournaments_won: {player_with_most_tournaments_won}')
-        
+            
         print(resultGame.print_results())
         print("\n----------------------------------------------------------------\n")
 
-        return resultGame        
+        return resultGame
+
 
 
     def print_player_data(self, player: 'Player') -> None:
