@@ -76,16 +76,7 @@ class TournamentInterface:
         if number.isdigit():
             tournament = self.manager_tournament.create_tournament()
             player1, player2 = self.manager_tournament.create_players()
-            print("------------------------------------------------------------------------")
-
-            print("Fin Torneo")
             self.resultsGame = self.manager_tournament.simulacion(player1, player2, tournament, int(number))  # Llamada a un método de ManagerTournament
-            for i in range(len(self.resultsGame)):
-                print("Resultado final torneoooooooooooooooooooooooooooooooooo")
-                self.resultsGame[i].print_results()
-
-            print("--------------------------------------------------------------------------")
-            
             self.show_results_panel(self.resultsGame)
         else:
             self.result_label.config(text="Por favor, ingrese un número válido.")
@@ -412,8 +403,8 @@ class TournamentInterface:
     def show_points_graph(self):
         # Recolectar datos para la gráfica
         tournament_ids = list(range(1, len(self.resultsGame) + 1))
-        player1_points = [result.get_player_winner_game().get_points() for result in self.resultsGame]
-        player2_points = [result.get_player_loser_game().get_points() for result in self.resultsGame]
+        player1_points = [result.get_player_winner_game().get_tournaments_won() for result in self.resultsGame]
+        player2_points = [result.get_player_loser_game().get_tournaments_won() for result in self.resultsGame]
 
         # Crear la gráfica
         plt.figure(figsize=(10, 5))

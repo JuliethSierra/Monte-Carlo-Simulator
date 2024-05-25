@@ -397,27 +397,13 @@ class ManagerTournament:
             Player(player_winner_game.get_player_id(),player_winner_game.get_luck(), player_winner_game.get_technique(), player_winner_game.get_positioning(), player_winner_game.get_sets_won(), player_winner_game.get_games_won(), player_winner_game.get_TieBreak(), player_winner_game.get_missed_serves(), player_winner_game.get_serves_served(), player_winner_game.get_points(), player_winner_game.get_type_of_tournament_won(), player_winner_game.get_tournaments_won(), player_winner_game.get_service_failure(), player_winner_game.get_total_points(), player_winner_game.get_total_games_won(), player_winner_game.get_total_sets_won(), player_winner_game.get_total_tournaments_won()),
             Player(player_loser_game.get_player_id(),player_loser_game.get_luck(), player_loser_game.get_technique(), player_loser_game.get_positioning(), player_loser_game.get_sets_won(), player_loser_game.get_games_won(), player_loser_game.get_TieBreak(), player_loser_game.get_missed_serves(), player_loser_game.get_serves_served(), player_loser_game.get_points(), player_loser_game.get_type_of_tournament_won(), player_loser_game.get_tournaments_won(), player_loser_game.get_service_failure(), player_loser_game.get_total_points(), player_loser_game.get_total_games_won(), player_loser_game.get_total_sets_won(), player_loser_game.get_total_tournaments_won())
         )
-
         # Imprimir datos del jugador 1
         print("Player 1 Data:")
         self.print_player_data(player1)
         # Imprimir datos del jugador 1
         print("Player 2 Data:")
         self.print_player_data(player2)
-        
-        print("\n----------------------------------------------------------------\n")
-        print("------------------------- GAME RESULT -------------------------")
-        print("\n----------------------------------------------------------------\n")
-
-        print(f'player_with_most_games_won: {player_with_most_games_won}')
-        print(f'player_with_most_tournaments_won: {player_with_most_tournaments_won}')
-            
-        print(resultGame.print_results())
-        print("\n----------------------------------------------------------------\n")
-
         return resultGame
-
-
 
     def print_player_data(self, player: 'Player') -> None:
         player.print_player_data()
