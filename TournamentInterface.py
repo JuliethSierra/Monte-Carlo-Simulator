@@ -23,7 +23,7 @@ class TournamentInterface:
         self.frame.pack(pady=5)
 
         # Crear y colocar entrada de número
-        self.number_label = tk.Label(self.frame, text="Ingrese un número:")
+        self.number_label = tk.Label(self.frame, text="Ingrese un número de tonrneos:")
         self.number_label.grid(row=0, column=0, pady=5, padx=5)
 
         self.number_entry = tk.Entry(self.frame)

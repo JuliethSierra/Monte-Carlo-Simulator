@@ -29,7 +29,6 @@ class ManagerTournament:
     #Metodo para determinar el tipo de torneo que se va a jugar
     def assign_tournament_type(self, tournament: Tournament) -> None:
         tournament.set_tournament_type(random.choice(["Best of 5", "Best of 3"]))
-        print(tournament.get_tournament_type())
 
     #Metodo para crear a los jugadores
     def create_players(self):
@@ -68,25 +67,35 @@ class ManagerTournament:
     
   # Método para simular la anotación de un punto
     def get_winner_points(self, player1: Player, player2: Player) -> Player:
+        self.set_position_player(player1)
+        self.set_position_player(player2)
         score = self.launch()
         if score == 1:
             self.add_player_points(player1)
         else:
-            if (self.ball_return() == 0):
-                score1 = self.launch()
-                if score1 == 0:
-                    if (self.ball_return()==0):
-                        self.get_winner_points(player1,player2)
-                    elif(self.ball_return()==1):
-                        self.add_player_points(player2)
+            if(self.is_good_position_(player1)):
+                if (self.ball_return() == 0):
+                    score1 = self.launch()
+                    if score1 == 0:
+                        if(self.is_good_position_(player2)):
+                            if (self.ball_return()==0):
+                                self.get_winner_points(player1,player2)
+                            elif(self.ball_return()==1):
+                                self.add_player_points(player2)
+                            else:
+                                self.add_player_points(player1)
+                        else:
+                           self.add_player_points(player1) 
                     else:
-                        self.add_player_points(player1)
+                        self.add_player_points(player2)
+                elif(self.ball_return() == 1):
+                    self.add_player_points(player1)
                 else:
                     self.add_player_points(player2)
-            elif(self.ball_return() == 1):
-                self.add_player_points(player1)
             else:
                 self.add_player_points(player2)
+
+
         return player1 if player1.get_points() > player2.get_points() else player2
  
     #Metodo para Simular un juego
@@ -97,9 +106,13 @@ class ManagerTournament:
         self.set_technique_player(player1)
         self.set_technique_player(player2)
 
+        self.set_position_player(player1)
+        self.set_position_player(player2)
+
         isPlaying = True
 
         while isPlaying:
+
             if(self.is_successful_service(player_service) == True):
                 self.get_winner_points(player_service,player_subtractor)
             else:
@@ -122,7 +135,7 @@ class ManagerTournament:
                 if abs(player_service.get_points() - player_subtractor.get_points()) >= 2:
                     self.establish_winner_game(player1, player2)
                     isPlaying = False
-        #player_service, player_subtractor = player_subtractor, player_service    
+        player_service, player_subtractor = player_subtractor, player_service    
         return player1 if player1.get_points() > player2.get_points() else player2
         
     #Metodo para añadir puntos a unjugador
@@ -136,6 +149,8 @@ class ManagerTournament:
     
     #Metodo para determinar si un servicio es exitoso o no
     def is_successful_service(self, player_service: Player) -> bool:
+        self.set_technique_player(player_service)
+
         if player_service.get_technique() >= 10:
             player_service.set_serves_served(player_service.get_serves_served()+1)
             return True
@@ -143,6 +158,18 @@ class ManagerTournament:
             player_service.set_missed_serves(player_service.get_missed_serves()+1)
             return False
     
+    #Metodo para definir la posición de unn jugador cada vez que va a realizar un servicio
+    def set_position_player(self, player: 'Player'):
+        player.set_positioning(random.uniform(1, 3))
+    
+    #Metodo para determinar si la posición de un jugador es buena o no
+    def is_good_position_(self, player_service: Player) -> bool:
+        self.set_position_player(player_service)
+        if player_service.get_positioning() >= 2:
+            return True
+        else:
+            return False
+        
     #Metodo para descontar un punto si un Jugador falla dos veces en el servicio
     def double_failure_service(self, player_service: 'Player'):
         if(player_service.get_service_failure() == 2):
@@ -184,6 +211,8 @@ class ManagerTournament:
     #Metodo para definir un ganador en caso de empate en un juego
     def get_winner_game(self, player_service: 'Player', player_subtractor: 'Player') -> 'Player':
         advantage_player = None
+        self.set_technique_player(player_service)
+        self.set_technique_player(player_subtractor)
         while True:
             if advantage_player is None:
                 player_service, player_subtractor = player_subtractor, player_service
@@ -247,6 +276,9 @@ class ManagerTournament:
         player1: Player
         player2: Player
         isPlaying = True
+
+        self.set_technique_player(player1)
+        self.set_technique_player(player2)
 
         while isPlaying:
             if(self.is_successful_service(player1) == True):
@@ -334,6 +366,26 @@ class ManagerTournament:
         player1.set_tournaments_won(0)
         player2.set_tournaments_won(0)
 
+        player1.set_TieBreak(0)
+        player2.set_TieBreak(0)
+
+        player1.set_missed_serves(0)
+        player2.set_missed_serves(0)
+
+        player1.set_serves_served(0)
+        player2.set_serves_served(0)
+
+        player1.set_type_of_tournament_won("")
+        player2.set_type_of_tournament_won("")
+
+        player1.set_service(False)
+        player1.set_substractor(False)
+        player2.set_service(False)
+        player2.set_substractor(False)
+
+        player1.set_service_failure(0)
+        player2.set_service_failure(0)
+
     #Metodo para Jugar varios torneos
     def playRounds(self, player1: 'Player', player2: 'Player',tournament: 'Tournament'):
         self.final_tournament(player1, player2)
@@ -397,12 +449,6 @@ class ManagerTournament:
             Player(player_winner_game.get_player_id(),player_winner_game.get_luck(), player_winner_game.get_technique(), player_winner_game.get_positioning(), player_winner_game.get_sets_won(), player_winner_game.get_games_won(), player_winner_game.get_TieBreak(), player_winner_game.get_missed_serves(), player_winner_game.get_serves_served(), player_winner_game.get_points(), player_winner_game.get_type_of_tournament_won(), player_winner_game.get_tournaments_won(), player_winner_game.get_service_failure(), player_winner_game.get_total_points(), player_winner_game.get_total_games_won(), player_winner_game.get_total_sets_won(), player_winner_game.get_total_tournaments_won()),
             Player(player_loser_game.get_player_id(),player_loser_game.get_luck(), player_loser_game.get_technique(), player_loser_game.get_positioning(), player_loser_game.get_sets_won(), player_loser_game.get_games_won(), player_loser_game.get_TieBreak(), player_loser_game.get_missed_serves(), player_loser_game.get_serves_served(), player_loser_game.get_points(), player_loser_game.get_type_of_tournament_won(), player_loser_game.get_tournaments_won(), player_loser_game.get_service_failure(), player_loser_game.get_total_points(), player_loser_game.get_total_games_won(), player_loser_game.get_total_sets_won(), player_loser_game.get_total_tournaments_won())
         )
-        # Imprimir datos del jugador 1
-        print("Player 1 Data:")
-        self.print_player_data(player1)
-        # Imprimir datos del jugador 1
-        print("Player 2 Data:")
-        self.print_player_data(player2)
         return resultGame
 
     def print_player_data(self, player: 'Player') -> None:
